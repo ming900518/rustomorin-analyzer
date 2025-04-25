@@ -2,8 +2,8 @@ mod lints;
 
 use lints::Lints;
 use syn::{
-    Block, Expr, ExprMethodCall, ExprTry, ExprUnsafe, Item, ItemFn, Local, LocalInit, Macro, Pat,
-    PatType, Stmt, StmtMacro, Type, TypeReference,
+    Block, Expr, ExprMethodCall, ExprTry, ExprUnsafe, ImplItem, ImplItemFn, Item, ItemFn, ItemImpl,
+    Local, LocalInit, Macro, Pat, PatType, Stmt, StmtMacro, Type, TypeReference,
 };
 use tower_lsp::{
     Client, LanguageServer, LspService, Server,
@@ -97,16 +97,7 @@ impl Backend {
 
             let diagnostics = items
                 .iter()
-                .fold(Vec::new(), |mut accmulator, item| {
-                    let Item::Fn(ItemFn { block, .. }) = item else {
-                        return accmulator;
-                    };
-
-                    let new_diags = Self::check_block(block);
-
-                    accmulator.push(new_diags);
-                    accmulator
-                })
+                .fold(Vec::new(), Self::process_item)
                 .into_iter()
                 .flatten()
                 .collect();
@@ -124,6 +115,28 @@ impl Backend {
         self.client
             .publish_diagnostics(uri.clone(), receiver.await.unwrap_or_default(), None)
             .await;
+    }
+
+    fn process_item(mut accumulator: Vec<Vec<Diagnostic>>, item: &Item) -> Vec<Vec<Diagnostic>> {
+        let new_diags = match item {
+            Item::Fn(ItemFn { block, .. }) => Self::check_block(block),
+            Item::Impl(ItemImpl { items, .. }) => items
+                .iter()
+                .fold(Vec::new(), |mut accumulator, item| match item {
+                    ImplItem::Fn(ImplItemFn { block, .. }) => {
+                        accumulator.push(Self::check_block(block));
+                        accumulator
+                    }
+                    _ => accumulator,
+                })
+                .into_iter()
+                .flatten()
+                .collect(),
+            _ => return accumulator,
+        };
+
+        accumulator.push(new_diags);
+        accumulator
     }
 
     fn check_block(block: &Block) -> Vec<Diagnostic> {
