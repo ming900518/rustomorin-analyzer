@@ -12,7 +12,7 @@
 
 某天聽特級咒物春日影時，突然覺得把邦邦世家的名場面臺詞搬上去也不錯，於是腦子一熱就變成這樣了，分享到 X 上後，沒想到還蠻多人按讚的
 
-<blockquote class="twitter-tweet"><p lang="zh" dir="ltr">一輩子寫 Rust <a href="https://t.co/2VWgHvkzL0">pic.twitter.com/2VWgHvkzL0</a></p>&mdash; Ming Chang (@mingchang137) <a href="https://twitter.com/mingchang137/status/1914984493540409550?ref_src=twsrc%5Etfw">April 23, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-dnt="true"><p lang="zh" dir="ltr">一輩子寫 Rust <a href="https://t.co/2VWgHvkzL0">pic.twitter.com/2VWgHvkzL0</a></p>&mdash; Ming Chang (@mingchang137) <a href="https://twitter.com/mingchang137/status/1914984493540409550?ref_src=twsrc%5Etfw">April 23, 2025</a></blockquote>
 
 所以其實也沒啥特別的理由，一切都是偶然（笑
 
